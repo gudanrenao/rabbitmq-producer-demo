@@ -1,5 +1,7 @@
 package com.zhangwenit.rabbitmq.producer.demo.config;
 
+import org.springframework.amqp.core.AcknowledgeMode;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -25,6 +27,18 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+
+        //将channel设置为事务模式
+//        rabbitTemplate.setChannelTransacted(true);
+
+        //路由保证 mandatory=true + ReturnListener
+//        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+//            System.out.println("未路由到queue，，回发消息：");
+//        });
+
+        //消费者确认模式
+//        rabbitTemplate.containerAckMode(AcknowledgeMode.MANUAL);
+
         return rabbitTemplate;
     }
 
